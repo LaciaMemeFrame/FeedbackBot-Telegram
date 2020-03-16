@@ -6,9 +6,9 @@ bot = telebot.TeleBot('token');
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
  if message.text ==u"/помощь":
-   bot.send_message(message.chat.id, u"Доступные команды  /новости /информация /помощь")
+   bot.send_message(message.chat.id, u"Доступные команды: /новости /информация /помощь")
  if message.text ==u"/help":
-   bot.send_message(message.chat.id, u"Доступные команды  /новости /информация /помощь") 
+   bot.send_message(message.chat.id, u"Доступные команды: /новости /информация /помощь") 
  if message.text ==u"/новости":
    bot.send_message(message.chat.id, u"IP SAMP RP сервера сменился 34.91.233.9:7777!")
  if message.text ==u"/news":
