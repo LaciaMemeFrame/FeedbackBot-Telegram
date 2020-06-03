@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*- 
 import telebot;
+import logging;
+import requests;
 
-bot = telebot.TeleBot('token');
+bot = telebot.TeleBot('токен');
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
@@ -27,6 +29,36 @@ def get_text_messages(message):
     bot.send_message(message.chat.id, u"привет пидор")
  if message.text ==u"/pidor_stat": 
     bot.send_message(message.chat.id, u"привет пидор")
+ if message.text ==u"/киски":  
+    url = 'https://api.thecatapi.com/v1/images/search'
+    r = requests.get(url, allow_redirects=True)
+    r.headers['x-api-key'] = 'токен'
+    json = r.json()
+    for j in json:
+      kittyurl = j['url']
+      rs = requests.get(kittyurl, allow_redirects=True)
+      open('kotik.jpg', 'wb').write(rs.content)
+      bot.send_photo(message. chat.id, open("kotik.jpg","rb"))
+ if message.text ==u"/pussy":  
+    url = 'https://api.thecatapi.com/v1/images/search'
+    r = requests.get(url, allow_redirects=True)
+    r.headers['x-api-key'] = 'токен'
+    json = r.json()
+    for j in json:
+      kittyurl = j['url']
+      rs = requests.get(kittyurl, allow_redirects=True)
+      open('kotik.jpg', 'wb').write(rs.content)
+      bot.send_photo(message. chat.id, open("kotik.jpg","rb"))
+ if message.text ==u"/pussy@pixelsetup_bot":  
+    url = 'https://api.thecatapi.com/v1/images/search'
+    r = requests.get(url, allow_redirects=True)
+    r.headers['x-api-key'] = 'токен'
+    json = r.json()
+    for j in json:
+      kittyurl = j['url']
+      rs = requests.get(kittyurl, allow_redirects=True)
+      open('kotik.jpg', 'wb').write(rs.content)
+      bot.send_photo(message. chat.id, open("kotik.jpg","rb"))        
  #elif message.text =="/help":
    #bot.send_message(message.from_user.id, "Доступные команды  /news и /info")
  #else:

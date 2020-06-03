@@ -14,3 +14,6 @@ Wait for new updates :-)
 ## Changelog
 ### v1.0
 - Initial release
+### v1.1
+- Added sending random photos of cats in jpg format
+- Optimization
