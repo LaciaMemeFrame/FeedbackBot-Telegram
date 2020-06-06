@@ -8,7 +8,7 @@
 
 Wait for new updates :-)
 ## Run
-1. python test.py
+1. python3 test.py
 
 
 ## Changelog
