@@ -18,6 +18,6 @@ Wait for new updates :-)
 - Added sending random photos of cats in jpg format
 - Optimization
 ### v1.5
-- Statistics Added
+- Added Statistics
 - Added ReplyKeyboardMarkup
 - Optimization
