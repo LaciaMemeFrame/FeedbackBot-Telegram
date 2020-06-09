@@ -21,7 +21,6 @@ Wait for new updates :-)
 - Added Statistics
 - Added ReplyKeyboardMarkup
 - Optimization
-<<<<<<< HEAD
 ### v1.51.453.5
 - Optimization
 - Added InlineQueryResultPhoto
