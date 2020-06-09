@@ -8,7 +8,7 @@
 
 Wait for new updates :-)
 ## Run
-1. python test.py
+1. python3 test.py
 
 
 ## Changelog
@@ -18,9 +18,12 @@ Wait for new updates :-)
 - Added sending random photos of cats in jpg format
 - Optimization
 ### v1.5
-- Statistics Added
+- Added Statistics
 - Added ReplyKeyboardMarkup
 - Optimization
+<<<<<<< HEAD
 ### v1.51.453.5
 - Optimization
 - Added InlineQueryResultPhoto
+=======
+>>>>>>> 75801033cd95d7034d9739b53d142908bc01ca2d
