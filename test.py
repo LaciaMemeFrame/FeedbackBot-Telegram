@@ -10,21 +10,32 @@ bot = telebot.TeleBot('токен');
 @bot.message_handler(commands=['start'])
 def handle_grammar2(m):
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    users = types.KeyboardButton('Статистика 1 пользователи')
-    commands = types.KeyboardButton('Статистика 1 команды')
-    pussy = types.KeyboardButton('/pussy')
-    pidor = types.KeyboardButton('/pidor_stat')
-    help = types.KeyboardButton('/help')
-    allstatistics = types.KeyboardButton('Статистика 1 пользователи команды')
-    keyboard.row(users, commands, pussy, pidor, help, allstatistics)
-    bot.send_message(m.from_user.id, 'Добро пожаловать', reply_markup=keyboard)
+    users = types.KeyboardButton(u'Статистика 1 пользователи')
+    commands = types.KeyboardButton(u'Статистика 1 команды')
+    pussy = types.KeyboardButton(u'🐈pussy')
+    pidor = types.KeyboardButton(u'🏳️‍🌈pidor_stat')
+    help = types.KeyboardButton(u'🆘Помощь')
+    allstatistics = types.KeyboardButton(u'Статистика 1 пользователи команды')
+    keyboard.row(pussy, pidor, help)
+    keyboard.add(users, commands, allstatistics)
+    bot.send_message(m.from_user.id, u'Добро пожаловать', reply_markup=keyboard)
+
+@bot.inline_handler(lambda query: query.query == u'pussy')
+def query_photo(inline_query):
+    try:
+        r = types.InlineQueryResultPhoto('1',
+                                          'https://sun9-26.userapi.com/c855328/v855328338/241690/QVaGg9fPkuk.jpg',
+                                          'https://sun9-26.userapi.com/c855328/v855328338/241690/QVaGg9fPkuk.jpg')
+        bot.answer_inline_query(inline_query.id, [r], cache_time=1)
+    except Exception as e:
+        print(e)     
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
  #if message.text[:10] == '/помощь' or message.text[:20] == '/help@pixelsetup_bot' or message.text[:30] == '/help':
    #tg_analytic.statistics (message.chat.id, message.text)
    #bot.send_message(message.chat.id, u"Доступные команды: /новости /информация /помощь")
- if message.text[:20] == u'/помощь' or message.text[:30] == u'/help@pixelsetup_bot' or message.text[:40] == u'/help':
+ if message.text == u'/помощь' or message.text == u'/help@pixelsetup_bot' or message.text == u'/help' or message.text == u'🆘Помощь':
    tg_analytic.statistics (message.chat.id, message.text)
    bot.send_message(message.chat.id, u"Доступные команды: /киски /помощь")  
  #if message.text[:40] == u'/новости' or message.text[:50] == u'/news@pixelsetup_bot' or message.text[:60] == u'/news':
@@ -33,10 +44,10 @@ def get_text_messages(message):
  #if message.text[:70] == u'/информация' or message.text[:80] == u'/info@pixelsetup_bot' or message.text[:90] == u'/info':
    #tg_analytic.statistics (message.chat.id, message.text)
    #bot.send_message(message.chat.id, u"Открыт SAMP RP Сервер! IP: 34.91.233.9:7777 Полезные ссылки: Наш сайт - laciamemeframe.space (Сайт создателя проекта, так как сайт самого сервера находится в разработке). Форум - В разработке, Группа Вконтакте - https://vk.com/pixsetup, Свободная группа Вконтакте - В разработке. IP: 34.91.233.9:7777")
- if message.text[:50] == u'/pidor_stat' or message.text[:60] == u'/pidor_stat@pixelsetup_bot': 
+ if message.text == u'/pidor_stat' or message.text == u'/pidor_stat@pixelsetup_bot' or message.text == u'🏳️‍🌈pidor_stat':
     tg_analytic.statistics (message.chat.id, message.text)
     bot.send_message(message.chat.id, u"привет пидор")
- if message.text[:70] == u'/киски' or message.text[:80] == u'/pussy' or message.text[:90] == u'/pussy@pixelsetup_bot':  
+ if message.text == u'/киски' or message.text == u'/pussy' or message.text == u'/pussy@pixelsetup_bot' or message.text == u'🐈pussy' or message.text == u'киски':  
     url = 'https://api.thecatapi.com/v1/images/search'
     r = requests.get(url, allow_redirects=True)
     r.headers['x-api-key'] = 'токен'
