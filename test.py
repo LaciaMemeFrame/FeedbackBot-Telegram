@@ -18,6 +18,7 @@ def handle_grammar2(m):
     allstatistics = types.KeyboardButton(u'Статистика 1 пользователи команды')
     keyboard.row(pussy, pidor, help)
     keyboard.add(users, commands, allstatistics)
+    tg_analytic.statistics (message.chat.id, message.text)
     bot.send_message(m.from_user.id, u'Добро пожаловать', reply_markup=keyboard)
 
 @bot.inline_handler(lambda query: query.query == u'pussy')
