@@ -24,3 +24,5 @@ Wait for new updates :-)
 ### v1.51.453.5
 - Optimization
 - Added InlineQueryResultPhoto
+### v1.52.453.5
+- Optimization
