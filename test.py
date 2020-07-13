@@ -10,14 +10,8 @@ bot = telebot.TeleBot('токен');
 @bot.message_handler(commands=['start'])
 def handle_grammar2(m):
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    users = types.KeyboardButton(u'Статистика 1 пользователи')
-    commands = types.KeyboardButton(u'Статистика 1 команды')
     pussy = types.KeyboardButton(u'🐈pussy')
-    pidor = types.KeyboardButton(u'🏳️‍🌈pidor_stat')
-    help = types.KeyboardButton(u'🆘Помощь')
-    allstatistics = types.KeyboardButton(u'Статистика 1 пользователи команды')
-    keyboard.row(pussy, pidor, help)
-    keyboard.add(users, commands, allstatistics)
+    keyboard.row(pussy)
     tg_analytic.statistics (m.chat.id, m.text)
     bot.send_message(m.from_user.id, u'Добро пожаловать', reply_markup=keyboard)
 
@@ -25,30 +19,37 @@ def handle_grammar2(m):
 def query_photo(inline_query):
     try:
         r = types.InlineQueryResultPhoto('1',
-                                          'https://sun9-26.userapi.com/c855328/v855328338/241690/QVaGg9fPkuk.jpg',
-                                          'https://sun9-26.userapi.com/c855328/v855328338/241690/QVaGg9fPkuk.jpg')
-        bot.answer_inline_query(inline_query.id, [r], cache_time=1)
+                                          'https://sun9-46.userapi.com/c206716/v206716770/166429/UyOS_SNoRDM.jpg',
+                                          'https://sun9-46.userapi.com/c206716/v206716770/166429/UyOS_SNoRDM.jpg')      
+        r2 = types.InlineQueryResultPhoto('2',
+                                          'https://sun9-53.userapi.com/c206720/v206720770/163a59/Y8bseTZwT5A.jpg',
+                                          'https://sun9-53.userapi.com/c206720/v206720770/163a59/Y8bseTZwT5A.jpg')     
+        r3 = types.InlineQueryResultPhoto('3',
+                                          'https://sun9-13.userapi.com/c206720/v206720770/163a7e/LzBLvtcIrf4.jpg',
+                                          'https://sun9-13.userapi.com/c206720/v206720770/163a7e/LzBLvtcIrf4.jpg')     
+        r4 = types.InlineQueryResultPhoto('4',
+                                          'https://sun9-35.userapi.com/c206720/v206720770/163a92/m2t8oBngAHs.jpg',
+                                          'https://sun9-35.userapi.com/c206720/v206720770/163a92/m2t8oBngAHs.jpg')    
+        r5 = types.InlineQueryResultPhoto('5',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163a99/vh64Re-hvtU.jpg',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163a99/vh64Re-hvtU.jpg')
+        r6 = types.InlineQueryResultPhoto('6',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163aa0/Dx7GUv0hy84.jpg',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163aa0/Dx7GUv0hy84.jpg')
+        r7 = types.InlineQueryResultPhoto('7',
+                                          'https://sun9-72.userapi.com/c206720/v206720770/163aa7/0IsuVtROia4.jpg',
+                                          'https://sun9-72.userapi.com/c206720/v206720770/163aa7/0IsuVtROia4.jpg') 
+        r8 = types.InlineQueryResultPhoto('8',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163ab0/4YXzj0vXVWU.jpg',
+                                          'https://sun9-71.userapi.com/c206720/v206720770/163ab0/4YXzj0vXVWU.jpg')                                   
+
+        bot.answer_inline_query(inline_query.id, [r, r2, r3, r4, r5, r6, r7, r8], cache_time=1)
     except Exception as e:
         print(e)     
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
- #if message.text[:10] == '/помощь' or message.text[:20] == '/help@pixelsetup_bot' or message.text[:30] == '/help':
-   #tg_analytic.statistics (message.chat.id, message.text)
-   #bot.send_message(message.chat.id, u"Доступные команды: /новости /информация /помощь")
- if message.text == u'/помощь' or message.text == u'/help@pixelsetup_bot' or message.text == u'/help' or message.text == u'🆘Помощь':
-   tg_analytic.statistics (message.chat.id, message.text)
-   bot.send_message(message.chat.id, u"Доступные команды: /киски /помощь")  
- #if message.text[:40] == u'/новости' or message.text[:50] == u'/news@pixelsetup_bot' or message.text[:60] == u'/news':
-   #tg_analytic.statistics (message.chat.id, message.text)
-   #bot.send_message(message.chat.id, u"IP SAMP RP сервера сменился 34.91.233.9:7777!")  
- #if message.text[:70] == u'/информация' or message.text[:80] == u'/info@pixelsetup_bot' or message.text[:90] == u'/info':
-   #tg_analytic.statistics (message.chat.id, message.text)
-   #bot.send_message(message.chat.id, u"Открыт SAMP RP Сервер! IP: 34.91.233.9:7777 Полезные ссылки: Наш сайт - laciamemeframe.space (Сайт создателя проекта, так как сайт самого сервера находится в разработке). Форум - В разработке, Группа Вконтакте - https://vk.com/pixsetup, Свободная группа Вконтакте - В разработке. IP: 34.91.233.9:7777")
- if message.text == u'/pidor_stat' or message.text == u'/pidor_stat@pixelsetup_bot' or message.text == u'🏳️‍🌈pidor_stat':
-    tg_analytic.statistics (message.chat.id, message.text)
-    bot.send_message(message.chat.id, u"привет пидор")
- if message.text == u'/киски' or message.text == u'/pussy' or message.text == u'/pussy@pixelsetup_bot' or message.text == u'🐈pussy' or message.text == u'киски':  
+ if message.text == u'/pussy' or message.text == u'/pussy@pixelsetup_bot' or message.text == u'🐈pussy':  
     url = 'https://api.thecatapi.com/v1/images/search'
     r = requests.get(url, allow_redirects=True)
     r.headers['x-api-key'] = 'токен'
@@ -71,8 +72,5 @@ def get_text_messages(message):
             messages = tg_analytic.analysis(st,message.chat.id)
             tg_analytic.statistics (message.chat.id, message.text)
             bot.send_message(message.chat.id, messages)         
- #elif message.text =="/help":
-   #bot.send_message(message.from_user.id, "Доступные команды  /news и /info")
- #else:
-    #bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
+
 bot.polling(none_stop=True, interval=0)
