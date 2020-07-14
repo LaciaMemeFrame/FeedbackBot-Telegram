@@ -55,28 +55,25 @@ def query_photo(inline_query):
                                           'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline.jpg',
                                           'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline.jpg')      
         r2 = types.InlineQueryResultPhoto('2',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline1.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline1.jpg')     
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs1.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs1.jpg')     
         r3 = types.InlineQueryResultPhoto('3',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline2.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline2.jpg')     
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs2.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs2.jpg')     
         r4 = types.InlineQueryResultPhoto('4',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline3.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline3.jpg')    
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs3.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs3.jpg')    
         r5 = types.InlineQueryResultPhoto('5',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline4.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline4.jpg')
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs4.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs4.jpg')
         r6 = types.InlineQueryResultPhoto('6',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline5.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline5.jpg')
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs5.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs5.jpg')
         r7 = types.InlineQueryResultPhoto('7',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline6.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline6.jpg') 
-        r8 = types.InlineQueryResultPhoto('8',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline7.jpg',
-                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inline7.jpg')                                   
-
-        bot.answer_inline_query(inline_query.id, [r, r2, r3, r4, r5, r6, r7, r8], cache_time=1)
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs6.jpg',
+                                          'https://raw.githubusercontent.com/LaciaMemeFrame/ChatBot-Telegram/master/inlinedogs6.jpg')                                   
+                                          
+        bot.answer_inline_query(inline_query.id, [r, r2, r3, r4, r5, r6, r7], cache_time=1)
     except Exception as e:
         print(e)     
 
