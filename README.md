@@ -27,4 +27,4 @@ Wait for new updates :-)
 ### v1.52.453.5
 - Optimization
 ### v1.62.453.5
-- - Added sending random photos of dogs in jpg format
+- Added sending random photos of dogs in jpg format
