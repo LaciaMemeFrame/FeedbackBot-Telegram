@@ -28,3 +28,8 @@ Wait for new updates :-)
 - Optimization
 ### v1.62.453.5
 - Added sending random photos of dogs in jpg format
+### v1.70
+- Added sending messages to users by id
+- Added view of the number of users
+- Restricted access rights to some commands by ADMIN_CHAT_ID
+- Optimization
