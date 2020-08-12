@@ -2,7 +2,13 @@
  Ready Template ChatBot Telegram
 ## Made by
 - The answer to the given phrases
-
+- Sending random photos of cats in jpg format
+- Statistics
+- Added ReplyKeyboardMarkup
+- Added InlineQueryResultPhoto
+- Sending random photos of dogs in jpg format
+- Sending messages to users by id
+- Restricted access rights to some commands by ADMIN_CHAT_ID
 ## What is planned
 - Fledged chatbot with all the functions of bans, warns, etc
 
@@ -33,3 +39,5 @@ Wait for new updates :-)
 - Added view of the number of users
 - Restricted access rights to some commands by ADMIN_CHAT_ID
 - Optimization
+### v1.70.0000.021.0
+- Update README.md
