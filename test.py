@@ -183,7 +183,6 @@ def get_text_messages(message):
                 tg_analytic.remove(message.chat.id)
         else:
             messages = tg_analytic.analysis(st,message.chat.id)
-            print("Показ статистики!")
             tg_analytic.statistics (message.chat.id, message.text)
             bot.send_message(message.chat.id, messages, disable_notification=True)
 
