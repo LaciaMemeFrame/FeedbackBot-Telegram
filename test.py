@@ -4,6 +4,9 @@ from telebot import TeleBot
 import logging
 import requests
 import tg_analytic
+import nekos
+from time import sleep
+from PIL import Image 
 
 TOKEN = 'токен'
 
@@ -48,17 +51,12 @@ def send_message_users(message):
 
 @bot.message_handler(commands=['start'])
 def handle_grammar2(m):
-    keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    pussy = types.KeyboardButton(u'🐈pussy')
-    dogs = types.KeyboardButton(u'🦮dogs')
-    statics = types.KeyboardButton(u'Статистика👩‍🏫')
-    github = types.KeyboardButton(u'GitHub🤖')
-    keyboard.add(pussy, dogs, statics, github)
     tg_analytic.statistics (m.chat.id, m.text)
-    bot.send_message(m.from_user.id, u'Добро пожаловать', reply_markup=keyboard)
+    bot.send_message(m.from_user.id, f"<b>Добро пожаловать, {m.from_user.first_name}</b>", parse_mode='HTML', disable_notification=True)
     save_chat_id(m.chat.id)
+    sleep(0.01)
 
-@bot.inline_handler(lambda query: query.query == u'pussy')
+@bot.inline_handler(lambda query: query.query == u'kitty')
 def query_photo(inline_query):
     try:
         r = types.InlineQueryResultPhoto('1',
@@ -123,7 +121,7 @@ def query_photo(inline_query):
 def get_text_messages(message):
  chat_id = int(message.chat.id)
  text = message.text
- if message.text == u'/dogs' or message.text == u'/dogs@pixelsetup_bot' or message.text == u'🦮dogs':  
+ if message.text == u'/dogs' or message.text == u'/dogs@pixelsetup_bot':  
     url = 'https://api.thedogapi.com/v1/images/search'
     r = requests.get(url, allow_redirects=True)
     r.headers['x-api-key'] = 'токен'
@@ -132,9 +130,12 @@ def get_text_messages(message):
       dogsurl = j['url']
       rs = requests.get(dogsurl, allow_redirects=True)
       open('dogs.jpg', 'wb').write(rs.content)
+      print("Фото отправленно!")
       tg_analytic.statistics (message.chat.id, message.text)
-      bot.send_photo(message. chat.id, open("dogs.jpg","rb"))
- if message.text == u'/pussy' or message.text == u'/pussy@pixelsetup_bot' or message.text == u'🐈pussy':  
+      bot.send_photo(message. chat.id, open("dogs.jpg","rb"), disable_notification=True)
+      sleep(5)
+
+ if message.text == u'/kitty' or message.text == u'/kitty@pixelsetup_bot':  
     url = 'https://api.thecatapi.com/v1/images/search'
     r = requests.get(url, allow_redirects=True)
     r.headers['x-api-key'] = 'токен'
@@ -143,26 +144,51 @@ def get_text_messages(message):
       kittyurl = j['url']
       rs = requests.get(kittyurl, allow_redirects=True)
       open('kotik.jpg', 'wb').write(rs.content)
+      print("Фото отправленно!")
       tg_analytic.statistics (message.chat.id, message.text)
-      bot.send_photo(message. chat.id, open("kotik.jpg","rb"))
+      bot.send_photo(message. chat.id, open("kotik.jpg","rb"), disable_notification=True)
+      sleep(5)
+
+ if message.text == u'/help' or message.text == u'/help@pixelsetup_bot':
+      print("Команды бота!")
+      tg_analytic.statistics (message.chat.id, message.text)
+      bot.send_message(message.chat.id, f"<b>Все команды бота!\n/help - Все команды бота\n/dogs - Собачки с thedogapi.com\n/kitty - Котики с thecatapi.com\n/wallpaper - Аниме обои с nekos.life</b>", parse_mode='HTML', disable_notification=True)
+      sleep(5)
+
+ if message.text == u'/wallpaper' or message.text == u'/wallpaper@pixelsetup_bot':
+      url = 'https://nekos.life/api/v2/img/wallpaper'
+      r = requests.get(url, allow_redirects=True)
+      r.headers
+      json = r.json()
+      pussyurl = json['url']
+      rs = requests.get(pussyurl, allow_redirects=True)
+      open('wallpaper.png', 'wb').write(rs.content)
+      print("Обои отправленны!")
+      tg_analytic.statistics (message.chat.id, message.text)
+      bot.send_photo(message.chat.id, open("wallpaper.png", "rb"), disable_notification=True)
+      sleep(3)
+      bot.send_document(message.chat.id, open("wallpaper.png","rb"), disable_notification=True)
+      sleep(3)
+      bot.send_message(message.chat.id, f"<b>Обои можно запрашивать раз в 10 секунд!</b>", parse_mode='HTML', disable_notification=True)
+      sleep(10)
+          
  elif 'Lacia' in text and chat_id == ADMIN_CHAT_ID:
         st = message.text.split(' ')
         if 'txt' in st or 'тхт' in st:
             tg_analytic.analysis(st,message.chat.id)
             with open('%s.txt' %message.chat.id ,'r',encoding='UTF-8') as file:
+                print("Показ статистики!")
                 tg_analytic.statistics (message.chat.id, message.text)
-                bot.send_document(message.chat.id,file)
+                bot.send_document(message.chat.id,file, disable_notification=True)
                 tg_analytic.remove(message.chat.id)
         else:
             messages = tg_analytic.analysis(st,message.chat.id)
+            print("Показ статистики!")
             tg_analytic.statistics (message.chat.id, message.text)
-            bot.send_message(message.chat.id, messages)
+            bot.send_message(message.chat.id, messages, disable_notification=True)
 
- elif text == 'GitHub🤖':
-		bot.send_message(chat_id, 'Исходный код бота\n👩‍💻GitHub: https://github.com/LaciaMemeFrame/ChatBot-Telegram', parse_mode='HTML')
-
- elif text == 'Статистика👩‍🏫':
-		bot.send_message(chat_id, f'Статистика пользователей!\n👩‍❤️‍💋‍👩Пользователей: {users_amount[0]}\n🥳Бот запущен: 12.08.2020', parse_mode='HTML')              
+ elif 'Статистика'in text and chat_id == ADMIN_CHAT_ID:
+		bot.send_message(chat_id, f"<b>Статистика пользователей!\nПользователей: {users_amount[0]}</b>", parse_mode='HTML', disable_notification=True)              
   
  elif 'РАЗОСЛАТЬ: ' in text and chat_id == ADMIN_CHAT_ID:
     msg = text.replace("РАЗОСЛАТЬ: ", "")
