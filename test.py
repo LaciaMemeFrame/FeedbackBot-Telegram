@@ -177,7 +177,6 @@ def get_text_messages(message):
         if 'txt' in st or 'тхт' in st:
             tg_analytic.analysis(st,message.chat.id)
             with open('%s.txt' %message.chat.id ,'r',encoding='UTF-8') as file:
-                print("Показ статистики!")
                 tg_analytic.statistics (message.chat.id, message.text)
                 bot.send_document(message.chat.id,file, disable_notification=True)
                 tg_analytic.remove(message.chat.id)
