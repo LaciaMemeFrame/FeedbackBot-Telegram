@@ -21,7 +21,7 @@ Wait for new updates :-)
 ### v1.0
 - Initial release
 ### v1.1
-- Added sending random photos of cats in jpg format
+- Added sending random photos of cats in jpg format from thecatapi.com
 - Optimization
 ### v1.5
 - Added Statistics
@@ -33,7 +33,7 @@ Wait for new updates :-)
 ### v1.52.453.5
 - Optimization
 ### v1.62.453.5
-- Added sending random photos of dogs in jpg format
+- Added sending random photos of dogs in jpg format from thedogapi.com
 ### v1.70
 - Added sending messages to users by id
 - Added view of the number of users
@@ -41,3 +41,8 @@ Wait for new updates :-)
 - Optimization
 ### v1.70.0000.021.0
 - Update README.md
+### v2.0
+- Removed ReplyKeyboardMarkup
+- Added /help command with all bot commands
+- Added sending random anime wallpapers from nekos.life
+- Optimization
