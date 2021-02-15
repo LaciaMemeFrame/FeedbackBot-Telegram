@@ -1,21 +1,16 @@
-# ChatBot-Telegram
- Ready Template ChatBot Telegram
+# FeedbackBot-Telegram
+ Ready Template Feedback Bot Telegram
 ## Made by
-- The answer to the given phrases
-- Sending random photos of cats in jpg format
-- Statistics
-- Added ReplyKeyboardMarkup
-- Added InlineQueryResultPhoto
-- Sending random photos of dogs in jpg format
-- Sending messages to users by id
-- Restricted access rights to some commands by ADMIN_CHAT_ID
+- admin commands: /ads (text), /idsed (user_id) (text), /stat
+- users commands: /kitty, /dogs, /wallpaper, /help
+
 ## What is planned
-- Fledged chatbot with all the functions of bans, warns, etc
+- Wait for new updates :-)
 
-Wait for new updates :-)
 ## Run
-1. python3 test.py
-
+1. configure the settings.ini file and test.py file
+2. python3 -m pip install -r requirements.txt
+3. python3 test.py
 
 ## Changelog
 ### v1.0
@@ -46,3 +41,14 @@ Wait for new updates :-)
 - Added /help command with all bot commands
 - Added sending random anime wallpapers from nekos.life
 - Optimization
+## Latest update using [pyTelegramBotApi](https://github.com/eternnoir/pyTelegramBotAPI)
+### v2.1
+- Removed command statistics
+- Added search for duckduckgo
+## Update using [Pyrogram](https://github.com/pyrogram/pyrogram)
+### v2.2
+- Added settings.ini file
+- Added requirements.txt file
+- Added feedback
+- Added blacklist
+- Removed InlineQueryResultPhoto
