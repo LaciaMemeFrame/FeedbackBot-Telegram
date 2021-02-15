@@ -7,8 +7,8 @@ import sys
 import os
 import random
 
-BLOCK_ID = [черный список бота]
-ADMIN_NAME = [имя админа]
+BLOCK_ID = [213123132]
+ADMIN_NAME = ['имя админа', 'имя админа']
 ADM_CHAT_ID = [айди админа бота]
 ADMIN_CHAT_ID = ['айди админа бота', 'айди админа бота']
 ADMIN_BOT = [айди бота]
@@ -164,7 +164,7 @@ async def stic(bot, message):
         return
     if  message.text != None:
         await bot.send_message(random.choice(ADMIN_CHAT_ID), text = f"Имя - {message.from_user.first_name}\nid - <code>{message.from_user.id}</code>\n<a href='tg://user?id={message.from_user.id}'>Permalink</a>\nТекст сообщения - {message.text}", disable_notification=True)
-        await bot.send_message(message.chat.id, text = f"<b>Ваше сообщение успешно доставлено пользователю <a href='tg://user?id={ADMIN_CHAT_ID}'>{ADMIN_NAME}</a></b>", disable_notification=True, reply_to_message_id=message.message_id)
+        await bot.send_message(message.chat.id, text = f"<b>Ваше сообщение успешно доставлено пользователю <a href='tg://user?id={random.choice(ADMIN_CHAT_ID)}'>{random.choice(ADMIN_NAME)}</a></b>", disable_notification=True, reply_to_message_id=message.message_id)
     elif message.text == None:
         try:
             try:
@@ -181,7 +181,7 @@ async def stic(bot, message):
                             await bot.send_audio(random.choice(ADMIN_CHAT_ID), audio = f"{message.audio.file_id}", caption = f"Имя - {message.from_user.first_name}\nid - <code>{message.from_user.id}</code>\n<a href='tg://user?id={message.from_user.id}'>Permalink</a>", disable_notification=True)
                         except: 
                             await bot.send_animation(random.choice(ADMIN_CHAT_ID), animation = f"{message.animation.file_id}", caption = f"Имя - {message.from_user.first_name}\nid - <code>{message.from_user.id}</code>\n<a href='tg://user?id={message.from_user.id}'>Permalink</a>", disable_notification=True)
-            await bot.send_message(message.chat.id, text = f"<b>Ваше сообщение успешно доставлено пользователю <a href='tg://user?id={ADMIN_CHAT_ID}'>{ADMIN_NAME}</a></b>", disable_notification=True, reply_to_message_id=message.message_id)
+            await bot.send_message(message.chat.id, text = f"<b>Ваше сообщение успешно доставлено пользователю <a href='tg://user?id={random.choice(ADMIN_CHAT_ID)}'>{random.choice(ADMIN_NAME)}</a></b>", disable_notification=True, reply_to_message_id=message.message_id)
         except Exception as e:
                     await bot.send_message(message.chat.id, text = f"<b>{e}</b>", parse_mode='HTML')
         await asyncio.sleep(0.5)
