@@ -48,7 +48,7 @@ def send_message_users(message):
 			'chat_id': chat_id,
 			'text': message
 		}
-		response = requests.post(f'http://api.telegram.org/bot{BOT_TOKEN}/sendMessage', data=data)
+		response = requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage', data=data)
 
 	with open(chat_ids_file, "r") as ids_file:
 		ids_list = [line.split('\n')[0] for line in ids_file]
@@ -78,7 +78,7 @@ async def text(bot, message):
         await asyncio.sleep(0.5)
         try:
             await bot.send_message(ids, text = f"{mess}", disable_notification=True, reply_to_message_id=message.message_id, parse_mode = 'HTML')
-            await bot.send_message(message.chat.id, text = f"<a href='tg://user?id={ADMIN_CHAT_ID}'>Ваше сообщение</a> <code>{mess}</code> успешно отправленно <a href='tg://user?id={ids}'>пользователю</a>", disable_notification=True, reply_to_message_id=message.message_id, parse_mode = 'HTML')
+            await bot.send_message(message.chat.id, text = f"<a href='tg://user?id={random.choice(ADMIN_CHAT_ID)}'>Ваше сообщение</a> <code>{mess}</code> успешно отправленно <a href='tg://user?id={ids}'>пользователю</a>", disable_notification=True, reply_to_message_id=message.message_id, parse_mode = 'HTML')
         except Exception as e:
                     await bot.send_message(message.chat.id, text = f"<b>{e}</b>", parse_mode='HTML', reply_to_message_id=message.message_id)
         await asyncio.sleep(0.5)
