@@ -1,7 +1,7 @@
 # FeedbackBot-Telegram
  Ready Template Feedback Bot Telegram
 ## Made by
-- admin commands: /ads (text), /idsed (user_id) (text), /stat
+- admin commands: /unblocklist (user_id), /blocklist (user_id), /stat
 - users commands: /kitty, /dogs, /wallpaper, /help
 
 ## What is planned
