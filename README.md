@@ -8,9 +8,9 @@
 - Wait for new updates :-)
 
 ## Run
-1. configure the settings.ini file and test.py file
+1. configure the config.ini file
 2. python3 -m pip install -r requirements.txt
-3. python3 test.py
+3. python3 аниме_девочка.py
 
 ## Changelog
 ### v1.0
@@ -52,3 +52,5 @@
 - Added feedback
 - Added blacklist
 - Removed InlineQueryResultPhoto
+### v3.0
+- The bot has been completely rewritten
