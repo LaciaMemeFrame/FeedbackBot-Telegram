@@ -2,7 +2,7 @@
  Ready Template Feedback Bot Telegram
 ## Made by
 - admin commands: /unblocklist (user_id), /blocklist (user_id), /stat
-- users commands: /kitty, /dogs, /wallpaper, /help
+- users commands: None
 
 ## What is planned
 - Wait for new updates :-)
@@ -54,3 +54,6 @@
 - Removed InlineQueryResultPhoto
 ### v3.0
 - The bot has been completely rewritten
+### v3.1
+- Added confirmation of mailing
+- Optimization
