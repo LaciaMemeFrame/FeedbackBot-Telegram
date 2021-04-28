@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 from pymongo import MongoClient
-from db import db_write, db_chek_blocklist, send_all_message
+from db import db_write, db_chek_blocklist, send_all_message, flood_control
 import configparser
 import sys
 import os
@@ -36,9 +36,40 @@ async def stat(client, message):
                                  reply_to_message_id=message.message_id)
 
 
+@Client.on_message(filters.command(["enable_antiflood"], "/") & filters.all)
+async def enable_antiflood(client, message):
+    if message.from_user.username == me_chat_id \
+            and len(message.text.split()) == 1:
+        db = createDB["flood"]
+        enable = db.find_one({"ENABLE": f"YES"})
+        if enable != None:
+            await message.reply_text(f"<b>[Анти-флуд] уже включен!</b>",
+                                     reply_to_message_id=message.message_id)
+        else:
+            antifl = {"ENABLE": f"YES"}
+            db.insert_one(antifl).inserted_id
+            await message.reply_text(f"<b>[Анти-флуд] включен!</b>",
+                                     reply_to_message_id=message.message_id)
+    elif message.from_user.username == me_chat_id \
+            and len(message.text.split()) == 2:
+        disable = message.text.split(" ")[1]
+        db = createDB["flood"]
+        enable = db.find_one({"ENABLE": f"YES"})
+        if enable != None \
+                and disable == "disable":
+            db.delete_one({"ENABLE": f"YES"})
+            await message.reply_text(f"<b>[Анти-флуд] выключен!</b>",
+                                     reply_to_message_id=message.message_id)
+        elif enable == None \
+                and disable == "disable":
+            await message.reply_text(f"<b>[Анти-флуд] не включен!</b>",
+                                     reply_to_message_id=message.message_id)
+
+
 @Client.on_message(filters.command(["blocklist"], "/") & filters.all)
 async def db_write_blocklist(client, message):
-    if message.from_user.username == me_chat_id and len(message.text.split()) == 2:
+    if message.from_user.username == me_chat_id \
+            and len(message.text.split()) == 2:
         message_split = message.text.split(" ")[1]
         db = createDB["block_id"]
         user = db.find_one({"USER_ID": f"{message_split}"})
@@ -51,14 +82,16 @@ async def db_write_blocklist(client, message):
             db.insert_one(user).inserted_id
             await message.reply_text(f"<b>Пользователь добавлен в черный список бота!</b>",
                                      reply_to_message_id=message.message_id)
-    elif len(message.text.split()) != 2:
+    elif message.from_user.username == me_chat_id \
+            and len(message.text.split()) != 2:
         await message.reply_text("<b>Кого заблокировать?</b>",
                                  reply_to_message_id=message.message_id)
 
 
 @Client.on_message(filters.command(["unblocklist"], "/") & filters.all)
 async def db_write_unblocklist(client, message):
-    if message.from_user.username == me_chat_id and len(message.text.split()) == 2:
+    if message.from_user.username == me_chat_id \
+            and len(message.text.split()) == 2:
         message_split = message.text.split(" ")[1]
         db = createDB["block_id"]
         find_user_in_black = db.find_one({"USER_ID": f"{message_split}"})
@@ -69,7 +102,8 @@ async def db_write_unblocklist(client, message):
         else:
             await message.reply_text(f"<b>Пользователь не в черном списке бота!</b>",
                                      reply_to_message_id=message.message_id)
-    elif len(message.text.split()) != 2:
+    elif message.from_user.username == me_chat_id \
+            and len(message.text.split()) != 2:
         await message.reply_text("<b>Кого разблокировать?</b>",
                                  reply_to_message_id=message.message_id)
 
@@ -77,7 +111,9 @@ async def db_write_unblocklist(client, message):
 @Client.on_message(filters.private & filters.all)
 async def feedback(client, message):
     chek = db_chek_blocklist(message)
-    if message.from_user.username != me_chat_id:
+    flood = await flood_control(message)
+    if message.from_user.username != me_chat_id \
+            and flood != False:
         if chek == False:
             await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
                                      reply_to_message_id=message.message_id)
