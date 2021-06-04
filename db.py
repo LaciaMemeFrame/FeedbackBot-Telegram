@@ -3,6 +3,8 @@ import configparser
 import sys
 import os
 from time import time
+from collections import defaultdict
+from typing import Union
 
 config_path = os.path.join(sys.path[0], 'config.ini')
 config = configparser.ConfigParser()
@@ -11,9 +13,9 @@ me_chat_id = config.get('anime_girl', 'chat_id')
 MongoDB = config.get('anime_girl', 'db_url')
 connectDB = MongoClient(MongoDB)
 createDB = connectDB.feedback_bot
-flooders = {}
-MESSAGES = 3
-SECONDS = 3
+USERS = defaultdict(list)
+MESSAGES = 10
+SECONDS = 5
 
 def db_write(message):
     db = createDB["users"]
@@ -42,35 +44,28 @@ async def send_all_message(client, message):
     count = 0
     for users in db.find():
         try:
-            await client.copy_message(users["USER_ID"],
-                                      me_chat_id,
-                                      message_id=message.message.message_id)
+            if message.message.reply_to_message != None:
+                await client.copy_media_group(users["USER_ID"],
+                                              me_chat_id,
+                                              message_id=message.message.reply_to_message.message_id)
+            else:
+                await client.copy_message(users["USER_ID"],
+                                        me_chat_id,
+                                        message_id=message.message.message_id)
             count += 1
         except:
             pass
     await message.message.reply_text(f"<b>Сообщение успешно разослано {count} пользователям</b>")
 
 
-async def isFlood(message):
-    message = str(message)
-
-    try:
-        flooders[message].append(time())
-    except:
-        flooders[message] = []
-        flooders[message].append(time())
-
-    for i in flooders[message]:
-        flooders[message] = list(filter(lambda x: time() - int(x) < SECONDS, flooders[message]))
-
-        if len(flooders[message]) > MESSAGES:
-            return True
-        else:
-            return False
+async def isFlood(message: int) -> Union[bool, None]:
+    USERS[message.from_user.id].append(time())
+    if len(list(filter(lambda x: time() - int(x) < SECONDS, USERS[message.from_user.id]))) > MESSAGES:
+        return False
 
 
 async def flood_control(message):
-    if await isFlood(11):
+    if await isFlood(message) is False:
         db_chek_antiflood = createDB["flood"]
         chek_antiflood = db_chek_antiflood.find_one({"ENABLE": "YES"})
         if chek_antiflood != None:

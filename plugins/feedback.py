@@ -119,28 +119,46 @@ async def feedback(client, message):
                                      reply_to_message_id=message.message_id)
         else:
             db_write(message)
-            forward = await message.forward(me_chat_id)
             db = createDB["message_ids"]
-            message_id = ({"MESSAGE_DATE": f"{forward.forward_date}",
-                           "USER_ID": f"{message.from_user.id}"})
-            db.insert_one(message_id).inserted_id
-            print(f"Сообщение {message_id['MESSAGE_DATE']} добавлено в БД")
-            await client.send_message(me_chat_id,
-                                      f"<b>Имя: {message.from_user.first_name}\n"
-                                      f"ID: {message.from_user.id}\n"
-                                      f"Permalink: {message.from_user.mention}</b>")
+            if message.media_group_id != None:
+                msg_find = db.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
+                if msg_find == None:
+                    message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
+                    db.insert_one(message_media_group_id).inserted_id
+                    msg_list = await client.get_media_group(message.chat.id, message.message_id)
+                    list_ids = []
+                    for _ in msg_list:
+                        list_ids.append(_.message_id)
+                    forward = await client.forward_messages(chat_id=me_chat_id,
+                                                            from_chat_id=message.chat.id,
+                                                            message_ids=list_ids)
+                    message_id = ({"MESSAGE_DATE": f"{forward[0].forward_date}",
+                                   "USER_ID": f"{message.from_user.id}"})
+                    db.insert_one(message_id).inserted_id
+                    print(f"Сообщение {message_id['MESSAGE_DATE']} добавлено в БД")
+            else:
+                forward = await message.forward(me_chat_id)
+                message_id = ({"MESSAGE_DATE": f"{forward.forward_date}",
+                            "USER_ID": f"{message.from_user.id}"})
+                db.insert_one(message_id).inserted_id
+                print(f"Сообщение {message_id['MESSAGE_DATE']} добавлено в БД")
     elif message.from_user.username == me_chat_id and message.reply_to_message:
         try:
             db = createDB["message_ids"]
             user_id = db.find_one({"MESSAGE_DATE": f"{message.reply_to_message.forward_date}"})
             print(f"Пользователь {user_id['USER_ID']} найден")
-            await client.copy_message(user_id["USER_ID"],
-                                      me_chat_id,
-                                      message_id=message.message_id)
-            user = await client.get_users(user_id["USER_ID"])
-            await message.reply_text("<b>Ваше сообщение доставлено пользователю "
-                                     f"{user.mention}</b>",
-                                     reply_to_message_id=message.message_id)
+            if message.media_group_id != None:
+                msg_find = db.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
+                if msg_find == None:
+                    message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
+                    db.insert_one(message_media_group_id).inserted_id
+                    await client.copy_media_group(user_id["USER_ID"],
+                                                          me_chat_id,
+                                                          message_id=message.message_id)
+            else:
+                await client.copy_message(user_id["USER_ID"],
+                                        me_chat_id,
+                                        message_id=message.message_id)
         except Exception as e:
             await message.reply_text(f"<b>{e}</b>",
                                      reply_to_message_id=message.message_id)
@@ -149,17 +167,35 @@ async def feedback(client, message):
         promote_button = InlineKeyboardButton("Рассылать?", callback_data="promote")
         delete_button = InlineKeyboardButton("Удалить", callback_data="delete")
         promote_keyboard = InlineKeyboardMarkup([[promote_button],[delete_button]])
-        await client.copy_message(me_chat_id,
-                                  me_chat_id,
-                                  message_id=message.message_id,
-                                  reply_markup=promote_keyboard)
+        if message.media_group_id != None:
+            db = createDB["message_ids"]
+            msg_find = db.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
+            if msg_find == None:
+                message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
+                db.insert_one(message_media_group_id).inserted_id
+                msg_list = await client.copy_media_group(me_chat_id,
+                                                         me_chat_id,
+                                                         message_id=message.message_id)
+                await msg_list[1].reply_text("<b>Подтвердите рассылку медиа группы</b>",
+                                             reply_markup=promote_keyboard,
+                                             reply_to_message_id=msg_list[1].message_id)
+        else:
+            await client.copy_message(me_chat_id,
+                                      me_chat_id,
+                                      message_id=message.message_id,
+                                      reply_markup=promote_keyboard)
 
 
 @Client.on_callback_query()
 async def callback_call(client, message):
     if message.data == "promote":
-        await message.message.edit_reply_markup(reply_markup=ReplyKeyboardRemove())
-        await send_all_message(client, message)
-        await message.message.delete()
+        if message.message.reply_to_message != None:
+            await message.message.delete()
+            await send_all_message(client, message)
+            await message.reply_to_message.message.delete()
+        else:
+            await message.message.edit_reply_markup(reply_markup=ReplyKeyboardRemove())
+            await send_all_message(client, message)
+            await message.message.delete()
     if message.data == "delete":
         await message.message.delete()
