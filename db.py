@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import configparser
 import sys
 import os
+from asyncio import sleep
 from time import time
 from collections import defaultdict
 from typing import Union
@@ -17,6 +18,7 @@ USERS = defaultdict(list)
 MESSAGES = 10
 SECONDS = 5
 
+
 def db_write(message):
     db = createDB["users"]
     user = db.find_one({"USER_ID": f"{message.chat.id}"})
@@ -24,7 +26,7 @@ def db_write(message):
         print(f"Ползователь {user['USER_ID']} уже добавлен в БД")
     else:
         user = {"USER_ID": f"{message.chat.id}",
-                "FIRST_NAME": f"{message.from_user.first_name}",}
+                "FIRST_NAME": f"{message.from_user.first_name}", }
         db.insert_one(user).inserted_id
         print(f"Ползователь {user['USER_ID']} добавлен в БД")
 
@@ -43,6 +45,7 @@ async def send_all_message(client, message):
     db = createDB["users"]
     count = 0
     for users in db.find():
+        await sleep(2)
         try:
             if message.message.reply_to_message != None:
                 await client.copy_media_group(users["USER_ID"],
@@ -50,8 +53,8 @@ async def send_all_message(client, message):
                                               message_id=message.message.reply_to_message.message_id)
             else:
                 await client.copy_message(users["USER_ID"],
-                                        me_chat_id,
-                                        message_id=message.message.message_id)
+                                          me_chat_id,
+                                          message_id=message.message.message_id)
             count += 1
         except:
             pass
@@ -97,5 +100,3 @@ async def flood_control(message):
             return True
         else:
             return True
-
-

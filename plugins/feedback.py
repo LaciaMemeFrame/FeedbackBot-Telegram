@@ -139,7 +139,7 @@ async def feedback(client, message):
             else:
                 forward = await message.forward(me_chat_id)
                 message_id = ({"MESSAGE_DATE": f"{forward.forward_date}",
-                            "USER_ID": f"{message.from_user.id}"})
+                               "USER_ID": f"{message.from_user.id}"})
                 db.insert_one(message_id).inserted_id
                 print(f"Сообщение {message_id['MESSAGE_DATE']} добавлено в БД")
     elif message.from_user.username == me_chat_id and message.reply_to_message:
@@ -153,12 +153,12 @@ async def feedback(client, message):
                     message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
                     db.insert_one(message_media_group_id).inserted_id
                     await client.copy_media_group(user_id["USER_ID"],
-                                                          me_chat_id,
-                                                          message_id=message.message_id)
+                                                  me_chat_id,
+                                                  message_id=message.message_id)
             else:
                 await client.copy_message(user_id["USER_ID"],
-                                        me_chat_id,
-                                        message_id=message.message_id)
+                                          me_chat_id,
+                                          message_id=message.message_id)
         except Exception as e:
             await message.reply_text(f"<b>{e}</b>",
                                      reply_to_message_id=message.message_id)
@@ -166,7 +166,7 @@ async def feedback(client, message):
     elif message.from_user.username == me_chat_id and message.reply_to_message == None:
         promote_button = InlineKeyboardButton("Рассылать?", callback_data="promote")
         delete_button = InlineKeyboardButton("Удалить", callback_data="delete")
-        promote_keyboard = InlineKeyboardMarkup([[promote_button],[delete_button]])
+        promote_keyboard = InlineKeyboardMarkup([[promote_button], [delete_button]])
         if message.media_group_id != None:
             db = createDB["message_ids"]
             msg_find = db.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
@@ -192,7 +192,10 @@ async def callback_call(client, message):
         if message.message.reply_to_message != None:
             await message.message.delete()
             await send_all_message(client, message)
-            await message.message.reply_to_message.delete()
+            await client.delete_messages(message.message.chat.id,
+                                         [_.message_id for _ in await client.get_media_group
+                                         (message.message.chat.id,
+                                          message.message.reply_to_message.message_id)])
         else:
             await message.message.edit_reply_markup(reply_markup=ReplyKeyboardRemove())
             await send_all_message(client, message)
