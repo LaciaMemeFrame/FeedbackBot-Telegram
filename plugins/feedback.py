@@ -192,7 +192,7 @@ async def callback_call(client, message):
         if message.message.reply_to_message != None:
             await message.message.delete()
             await send_all_message(client, message)
-            await message.reply_to_message.message.delete()
+            await message.message.reply_to_message.delete()
         else:
             await message.message.edit_reply_markup(reply_markup=ReplyKeyboardRemove())
             await send_all_message(client, message)
