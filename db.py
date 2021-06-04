@@ -45,7 +45,7 @@ async def send_all_message(client, message):
     db = createDB["users"]
     count = 0
     for users in db.find():
-        await sleep(2)
+        await sleep(6)
         try:
             if message.message.reply_to_message != None:
                 await client.copy_media_group(users["USER_ID"],
