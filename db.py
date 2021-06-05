@@ -3,7 +3,7 @@ import configparser
 import sys
 import os
 from asyncio import sleep
-from time import time, perf_counter
+from time import time
 from collections import defaultdict
 from typing import Union
 
@@ -44,33 +44,21 @@ def db_chek_blocklist(message):
 async def send_all_message(client, message):
     db = createDB["users"]
     count = 0
-    count_counts = 0
-    users_list = [user["USER_ID"] for user in db.find()]
-    start = perf_counter()
-    for users in users_list:
-        count_counts += 1
+    for users in db.find():
         try:
             if message.message.reply_to_message != None:
                 await sleep(1.5)
-                await client.copy_media_group(users,
+                await client.copy_media_group(users["USER_ID"],
                                               me_chat_id,
                                               message_id=message.message.reply_to_message.message_id)
             else:
-                await client.copy_message(users,
+                await client.copy_message(users["USER_ID"],
                                           me_chat_id,
                                           message_id=message.message.message_id)
             count += 1
         except:
-            print(count_counts)
             pass
-    end = perf_counter()
-    time = end - start
-    seconds = str(round(time, 3)).split(".")[0]
-    minutes = round(int(seconds) / 60)
-    await message.message.reply_text("<b>Сообщение успешно разослано {} пользователям\n"
-                                     "За {}:{} минут(ы)</b>".format(count,
-                                                                    minutes,
-                                                                    round((minutes * 60) - int(seconds))))
+    await message.message.reply_text("<b>Сообщение успешно разослано {} пользователям</b>".format(count))
 
 
 async def isFlood(message: int) -> Union[bool, None]:
