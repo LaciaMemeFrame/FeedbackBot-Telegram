@@ -7,4 +7,5 @@
 *.session
 *.session-journal
 /venv/
+/pyrogram/
 .idea
