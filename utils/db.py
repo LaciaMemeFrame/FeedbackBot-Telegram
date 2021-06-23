@@ -9,7 +9,7 @@ from time import time
 from collections import defaultdict
 from typing import Union
 
-config_path = os.path.join(sys.path[0], '../config.ini')
+config_path = os.path.join(sys.path[0], 'config.ini')
 config = configparser.ConfigParser()
 config.read(config_path)
 me_chat_id = config.get('anime_girl', 'chat_id')
