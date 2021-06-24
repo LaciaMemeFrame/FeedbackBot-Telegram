@@ -19,6 +19,9 @@ createDB = connectDB.feedback_bot
 USERS = defaultdict(list)
 MESSAGES = 10
 SECONDS = 5
+MEDIA_GROUP = defaultdict(list)
+MESSAGES_GROUP = 1
+SECONDSGROUP = 5
 users = createDB["users"]
 blocklist = createDB["block_id"]
 flood = createDB["flood"]
@@ -64,6 +67,12 @@ async def send_all_message(client: Client, message: Message):
 async def isFlood(message: int) -> Union[bool, None]:
     USERS[message.from_user.id].append(time())
     if len(list(filter(lambda x: time() - int(x) < SECONDS, USERS[message.from_user.id]))) > MESSAGES:
+        return False
+
+
+async def media_group_id(message: Message) -> Union[bool, None]:
+    MEDIA_GROUP[message.media_group_id].append(time())
+    if len(list(filter(lambda x: time() - int(x) < SECONDSGROUP, MEDIA_GROUP[message.media_group_id]))) > MESSAGES_GROUP:
         return False
 
 

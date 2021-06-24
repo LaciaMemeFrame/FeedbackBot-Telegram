@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove, Message
 from pyrogram.errors import UserBlocked
 from utils.db import db_write, db_chek_blocklist, send_all_message, flood_control, me_chat_id, users, blocklist, flood, \
-    message_ids
+    message_ids, media_group_id
 
 
 @Client.on_message(filters.command(["start"]) & ~filters.edited)
@@ -104,10 +104,8 @@ async def feedback(client: Client, message: Message):
         else:
             await db_write(message)
             if message.media_group_id:
-                msg_find = await message_ids.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
-                if msg_find is None:
-                    message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
-                    await message_ids.insert_one(message_media_group_id)
+                media_group = await media_group_id(message)
+                if media_group != False:
                     forward = await client.forward_messages(chat_id=me_chat_id,
                                                             from_chat_id=message.chat.id,
                                                             message_ids=[_.message_id for _ in
@@ -135,10 +133,8 @@ async def feedback(client: Client, message: Message):
         try:
             user_id = await message_ids.find_one({"MESSAGE_ID": f"{message.reply_to_message.message_id}"})
             if message.media_group_id:
-                msg_find = await message_ids.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
-                if msg_find is None:
-                    message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
-                    await message_ids.insert_one(message_media_group_id)
+                media_group = await media_group_id(message)
+                if media_group != False:
                     await client.copy_media_group(user_id["USER_ID"],
                                                   me_chat_id,
                                                   message_id=message.message_id,
@@ -161,10 +157,8 @@ async def feedback(client: Client, message: Message):
         delete_button = InlineKeyboardButton("Удалить", callback_data="delete")
         promote_keyboard = InlineKeyboardMarkup([[promote_button], [delete_button]])
         if message.media_group_id:
-            msg_find = await message_ids.find_one({"MEDIA_GROUP_ID": f"{message.media_group_id}"})
-            if msg_find is None:
-                message_media_group_id = {"MEDIA_GROUP_ID": f"{message.media_group_id}"}
-                await message_ids.insert_one(message_media_group_id)
+            media_group = await media_group_id(message)
+            if media_group != False:
                 msg_list = await client.copy_media_group(me_chat_id,
                                                          me_chat_id,
                                                          message_id=message.message_id)
