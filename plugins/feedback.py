@@ -99,8 +99,14 @@ async def feedback(client: Client, message: Message):
     if message.from_user.username != me_chat_id \
             and flood != False:
         if not chek:
-            await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
-                                     reply_to_message_id=message.message_id)
+            if message.media_group_id:
+                media_group = await media_group_id(message)
+                if media_group != False:
+                    await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                             reply_to_message_id=message.message_id)
+                else:
+                    await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                             reply_to_message_id=message.message_id)
         else:
             await db_write(message)
             if message.media_group_id:
