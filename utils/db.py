@@ -81,16 +81,31 @@ async def flood_control(message: Message):
         chek_antiflood = await flood.find_one({"ENABLE": "YES"})
         if chek_antiflood:
             user = await blocklist.find_one({"USER_ID": f"{message.from_user.id}"})
-            if user \
-                    and message.from_user.username != me_chat_id:
-                await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
-                                         reply_to_message_id=message.message_id)
-            elif user is None \
-                    and message.from_user.username != me_chat_id:
-                user = {"USER_ID": f"{message.from_user.id}"}
-                await blocklist.insert_one(user)
-                await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
-                                         reply_to_message_id=message.message_id)
-                return False
+            if message.media_group_id:
+                media_group = await media_group_id(message)
+                if media_group != False:
+                    if user \
+                            and message.from_user.username != me_chat_id:
+                        await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                                 reply_to_message_id=message.message_id)
+                    elif user is None \
+                            and message.from_user.username != me_chat_id:
+                        user = {"USER_ID": f"{message.from_user.id}"}
+                        await blocklist.insert_one(user)
+                        await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                                 reply_to_message_id=message.message_id)
+                        return False
+            else:
+                if user \
+                        and message.from_user.username != me_chat_id:
+                    await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                             reply_to_message_id=message.message_id)
+                elif user is None \
+                        and message.from_user.username != me_chat_id:
+                    user = {"USER_ID": f"{message.from_user.id}"}
+                    await blocklist.insert_one(user)
+                    await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+                                             reply_to_message_id=message.message_id)
+                    return False
         else:
             return True

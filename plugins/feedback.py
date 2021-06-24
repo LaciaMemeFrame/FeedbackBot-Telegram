@@ -104,8 +104,8 @@ async def feedback(client: Client, message: Message):
                 if media_group != False:
                     await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
                                              reply_to_message_id=message.message_id)
-                else:
-                    await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
+            else:
+                await message.reply_text("<b>Ты заблокирован в этом боте навсегда</b>",
                                              reply_to_message_id=message.message_id)
         else:
             await db_write(message)
