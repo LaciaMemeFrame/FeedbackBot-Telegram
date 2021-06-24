@@ -146,14 +146,14 @@ async def feedback(client: Client, message: Message):
                                                   message_id=message.message_id,
                                                   reply_to_message_id=int(user_id["REPLY_MESSAGE_ID"]))
                     await message.reply_text(
-                        f"<b>Вы успешно отправили сообщение <a href='tg://user?id={user_id['USER_ID']}'>пользоватлю</a></b>")
+                        f"<b>Вы успешно отправили сообщение <a href='tg://user?id={user_id['USER_ID']}'>пользователю</a></b>")
             else:
                 await client.copy_message(user_id["USER_ID"],
                                           me_chat_id,
                                           message_id=message.message_id,
                                           reply_to_message_id=int(user_id["REPLY_MESSAGE_ID"]))
                 await message.reply_text(
-                    f"<b>Вы успешно отправили сообщение <a href='tg://user?id={user_id['USER_ID']}'>пользоватлю</a></b>")
+                    f"<b>Вы успешно отправили сообщение <a href='tg://user?id={user_id['USER_ID']}'>пользователю</a></b>")
         except UserBlocked as e:
             await message.reply_text(f"<b>{e}</b>",
                                      reply_to_message_id=message.message_id)
