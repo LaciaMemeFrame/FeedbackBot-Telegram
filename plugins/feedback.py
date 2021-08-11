@@ -208,10 +208,14 @@ async def callback_call(client, message):
             await message.message.delete()
     if message.data == "delete":
         if message.message.reply_to_message:
-            await client.delete_messages(message.message.chat.id,
-                                         [_.message_id for _ in await client.get_media_group
-                                         (message.message.chat.id,
-                                          message.message.reply_to_message.message_id)])
-            await message.message.delete()
+            if message.message.reply_to_message.media_group_id:
+                await client.delete_messages(message.message.chat.id,
+                                             [_.message_id for _ in await client.get_media_group
+                                             (message.message.chat.id,
+                                              message.message.reply_to_message.message_id)])
+                await message.message.delete()
+            else:
+                await message.message.reply_to_message.delete()
+                await message.message.delete()
         else:
             await message.message.delete()
