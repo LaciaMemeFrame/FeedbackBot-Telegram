@@ -50,10 +50,13 @@ async def send_all_message(client: Client, message: Message):
     async for _ in users.find():
         try:
             if message.message.reply_to_message:
-                await sleep(1.5)
-                await client.copy_media_group(_["USER_ID"],
-                                              me_chat_id,
-                                              message_id=message.message.reply_to_message.message_id)
+                if message.message.reply_to_message.media_group_id:
+                    await sleep(1.5)
+                    await client.copy_media_group(_["USER_ID"],
+                                                  me_chat_id,
+                                                  message_id=message.message.reply_to_message.message_id)
+                else:
+                    await message.message.reply_to_message.forward(_["USER_ID"])
             else:
                 await client.copy_message(_["USER_ID"],
                                           me_chat_id,

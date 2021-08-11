@@ -162,15 +162,24 @@ async def feedback(client: Client, message: Message):
         promote_button = InlineKeyboardButton("Рассылать?", callback_data="promote")
         delete_button = InlineKeyboardButton("Удалить", callback_data="delete")
         promote_keyboard = InlineKeyboardMarkup([[promote_button], [delete_button]])
-        if message.media_group_id:
-            media_group = await media_group_id(message)
-            if media_group != False:
-                msg_list = await client.copy_media_group(me_chat_id,
-                                                         me_chat_id,
-                                                         message_id=message.message_id)
-                await msg_list[1].reply_text("<b>Подтвердите рассылку медиа группы</b>",
+        if message.media_group_id or message.poll:
+            if message.media_group_id:
+                media_group = await media_group_id(message)
+                if media_group != False:
+                    msg_list = await client.copy_media_group(me_chat_id,
+                                                             me_chat_id,
+                                                             message_id=message.message_id)
+                    await msg_list[1].reply_text("<b>Подтвердите рассылку медиа группы</b>",
+                                                 reply_markup=promote_keyboard,
+                                                 reply_to_message_id=msg_list[1].message_id)
+            elif message.poll:
+                msg_poll = await client.copy_message(me_chat_id,
+                                                     me_chat_id,
+                                                     message_id=message.message_id,
+                                                     reply_markup=promote_keyboard)
+                await msg_poll.reply_text("<b>Подтвердите рассылку голосования</b>",
                                              reply_markup=promote_keyboard,
-                                             reply_to_message_id=msg_list[1].message_id)
+                                             reply_to_message_id=msg_poll.message_id)
         else:
             await client.copy_message(me_chat_id,
                                       me_chat_id,
@@ -182,12 +191,17 @@ async def feedback(client: Client, message: Message):
 async def callback_call(client, message):
     if message.data == "promote":
         if message.message.reply_to_message:
-            await message.message.delete()
-            await send_all_message(client, message)
-            await client.delete_messages(message.message.chat.id,
-                                         [_.message_id for _ in await client.get_media_group
-                                         (message.message.chat.id,
-                                          message.message.reply_to_message.message_id)])
+            if message.message.reply_to_message.media_group_id:
+                await message.message.delete()
+                await send_all_message(client, message)
+                await client.delete_messages(message.message.chat.id,
+                                             [_.message_id for _ in await client.get_media_group
+                                             (message.message.chat.id,
+                                              message.message.reply_to_message.message_id)])
+            else:
+                await message.message.delete()
+                await send_all_message(client, message)
+                await message.message.reply_to_message.delete()
         else:
             await message.message.edit_reply_markup(reply_markup=ReplyKeyboardRemove())
             await send_all_message(client, message)
