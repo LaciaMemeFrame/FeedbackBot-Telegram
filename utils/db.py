@@ -1,5 +1,6 @@
 from pyrogram import Client
 from pyrogram.types import Message
+from pyrogram.errors import UserIsBlocked
 import motor.motor_asyncio
 import configparser
 import sys
@@ -25,7 +26,23 @@ SECONDSGROUP = 5
 users = createDB["users"]
 blocklist = createDB["block_id"]
 flood = createDB["flood"]
-message_ids = db = createDB["message_ids"]
+message_ids = createDB["message_ids"]
+promoted_id = createDB["admins"]
+
+
+async def admins_id(client: Client, message: Message):
+    list_adm = [int(_["USER_ID"]) async for _ in promoted_id.find()]
+    return list_adm
+
+
+async def admin_is_true(client: Client, message: Message):
+    list_admA = await admins_id(client, message)
+    if message.from_user.username == me_chat_id:
+        return True
+    elif message.from_user.id in list_admA:
+        return True
+    else:
+        return False
 
 
 async def db_write(message: Message):
@@ -62,9 +79,13 @@ async def send_all_message(client: Client, message: Message):
                                           me_chat_id,
                                           message_id=message.message.message_id)
             count += 1
+        except UserIsBlocked:
+            await users.delete_one({"USER_ID": f"{_['USER_ID']}"})
         except:
             pass
-    await message.message.reply_text("<b>Сообщение успешно разослано {} пользователям</b>".format(count))
+    _url_ = await message.message.reply_text("<b>Сообщение успешно разослано {} пользователям</b>".format(count))
+    await sleep(5)
+    await _url_.delete()
 
 
 async def isFlood(message: int) -> Union[bool, None]:
