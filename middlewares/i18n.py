@@ -1,8 +1,7 @@
 from pathlib import Path
-from aiogram import Dispatcher, Bot
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 from config import *
-from main import dp, bot
+from main import dp
 
 BASE_DIR = Path(__file__).parent.parent
 LOCALES_DIR = BASE_DIR / 'locales'
