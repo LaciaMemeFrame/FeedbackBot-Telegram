@@ -1,5 +1,2 @@
-motor~=2.4.0
-requests~=2.25.1
-Pyrogram~=1.2.9
-dnspython~=2.1.0
-TgCrypto~=1.2.2
+motor~=3.1.1
+aiogram~=2.23.1
